@@ -15,6 +15,9 @@
                         <h4 class="display-10">Notification For : Mrs. {{ Auth::user()->name }}</h4>
                     @endif
                 </div>
+                @if ($appointments->isEmpty())
+                <p>No appointment notification.</p>
+                @else
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
@@ -40,17 +43,21 @@
                                 has been Approve
                                 @elseif($appointment->status == 0)
                                 has not been Approved, Please Make an action
+                                @elseif($appointment->status == 2)
+                                has Rejected
                                 @else
                                 has been cancelled by the patient
                                 @endif
                                 </td>
                                 @else
                                 <td>Your Appointment on {{$appointment->date}} {{$appointment->time}} with dentist Name of Drg. {{$appointment->dentname}}
-                                    has been
+                                    
                                     @if($appointment->status == 1)
                                     Approve
                                     @elseif ($appointment->status == 0)
                                     has not been Approved
+                                    @elseif($appointment->status == 2)
+                                    has Rejected by the Dentist
                                     @else
                                     has been cancelled
                                     @endif
@@ -60,6 +67,7 @@
                         </tbody>
                     </table>
                 </div>
+                @endif
             </div>
         </div>
     </div>

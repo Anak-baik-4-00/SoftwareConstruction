@@ -11,7 +11,7 @@
     <meta name="description"
         content="Ample Admin Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
     <meta name="robots" content="noindex,nofollow">
-    <title>Ample Admin Lite Template by WrapPixel</title>
+    <title>E-Dental Admin</title>
     <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="plugins/images/favicon.png">
@@ -49,17 +49,17 @@
                     <!-- ============================================================== -->
                     <!-- Logo -->
                     <!-- ============================================================== -->
-                    <a class="navbar-brand" href="dashboard.html">
+                    <a class="navbar-brand" href="adminhome">
                         <!-- Logo icon -->
                         <b class="logo-icon">
                             <!-- Dark Logo icon -->
-                            <img src="{{ asset('assets/admin/plugins/images/logo-icon.png') }}" alt="homepage" />
+                            <img src="{{ asset('assets/admin/plugins/images/Icondental.png') }}" style="height: 50px" alt="homepage" />
                         </b>
                         <!--End Logo icon -->
                         <!-- Logo text -->
                         <span class="logo-text">
                             <!-- dark Logo text -->
-                            <img src="{{ asset('assets/admin/plugins/images/logo-text.png') }}" alt="homepage" />
+                            <img src="{{ asset('assets/admin/plugins/images/IconTextDental.png') }}" alt="homepage" />
                         </span>
                     </a>
                     <!-- ============================================================== -->
@@ -131,10 +131,17 @@
                     <ul id="sidebarnav">
                         <!-- User Profile-->
                         <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="profile.html"
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="UserVerification"
                                 aria-expanded="false">
                                 <i class="fa fa-user" aria-hidden="true"></i>
-                                <span class="hide-menu">Manage User</span>
+                                <span class="hide-menu">Verify User</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="RegistDentist"
+                                aria-expanded="false">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                                <span class="hide-menu">Register Dentist</span>
                             </a>
                         </li>
                     </ul>

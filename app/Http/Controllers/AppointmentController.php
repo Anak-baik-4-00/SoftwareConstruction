@@ -9,10 +9,36 @@ use App\Models\User;
 use App\Models\Treatment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class AppointmentController extends Controller
 {
-    public function makeAppointment(){
+    public function makeAppointment(Request $request){
+        $request->validate([
+            'dentistID' => 'required',
+            'treatmentID' => 'required',
+            'date' => 'required',
+            'time' => 'required',
+            'dentistID' => [
+                'required',
+                Rule::unique('appointments')->where(function ($query) use ($request) {
+                    return $query->where('date', $request->date)
+                        ->where('time', $request->time)
+                        ->where('dentistID', $request->dentistID)
+                        ->where(function ($subquery) {
+                            $subquery->where('status', 1)
+                                ->orWhere('status', 0);
+                        });
+                })->ignore($request->appointmentID),
+            ],
+        ], [
+            'dentistID.required' => 'Please select the dentist.',
+            'treatmentID.required' => 'Please select the treatment.',
+            'date.required' => 'Please select the date.',
+            'time.required' => 'Please select the time.',
+            'dentistID.unique' => 'An appointment already exists on the selected date and time with the same dentist.',
+        ]);
+
         $appointment = new Appointment();
         // $appointment->appointmentID = $appointment->appointmentID+1;
         $appointment->dentistID = request('dentistID');
@@ -23,6 +49,7 @@ class AppointmentController extends Controller
         $appointment->status = request('status');
 
         $appointment->save();
+        session()->flash('message', 'Appointment has been made.');
         return redirect()->route('view.all.appointment');
     }
     
@@ -37,7 +64,7 @@ class AppointmentController extends Controller
     //     return view('makeappointment', ['treatments' => $treatments]);
     // }
     
-    public function allappointment(){
+    public function dentistappointment(){
         $currentuserid = Auth::user()->id;
         // $appointments = Appointment::join('dentists', 'appointments.dentistID', '=', 'dentists.dentistID')
         // ->where('appointments.dentistID','=', $currentuserid)->get(['appointments.*', 'dentists.name as name']);
@@ -49,14 +76,21 @@ class AppointmentController extends Controller
     }
 
 
-    public function updatestatus(Request $request){
+    public function dentistupdatestatus(Request $request){
         $appointment = Appointment::findOrFail($request->appointmentID);
         $appointment->status = $request->input('changestatus');
         $appointment->save();
-        return back();
+        session()->flash('message', 'Appointment Approved.');
+        $message = '';
+        if ($appointment->status == 1) {
+        $message = 'Appointment Approved.';
+        } elseif ($appointment->status == 2) {
+        $message = 'Appointment Rejected.';
+        }
+        return back()->with('message', $message);
     }
 
-    public function allappointment1(){
+    public function patientappointment(){
         $currentuserid = Auth::user()->id;
         $appointments = Appointment::join('dentists', 'dentists.dentistID', '=', 'appointments.dentistID')->join('patients', 'patients.patientID', '=', 'appointments.patientID')
         ->where('appointments.patientID','=', $currentuserid)->orderby('date','asc')
@@ -65,23 +99,59 @@ class AppointmentController extends Controller
     }
 
 
-    public function updatestatus1(Request $request){
+    public function patientupdatestatus(Request $request){
         $appointment = Appointment::findOrFail($request->appointmentID);
         $appointment->status = $request->input('changestatus');
         $appointment->save();
+        session()->flash('message', 'Appointment Canceled.');
         return back();
     }
 
-    public function allappointment2(){
-        // $appointments = Appointment::all();
+    public function allappointment()
+    {
         $currentuserid = Auth::user()->id;
         $gender = Patient::select('gender')->where('patientID', '=', $currentuserid)->get();
-        $appointments = Appointment::join('dentists', 'dentists.dentistID', '=', 'appointments.dentistID')->join('patients', 'patients.patientID', '=', 'appointments.patientID')
-        ->where('appointments.patientID','=', $currentuserid)->orwhere('appointments.dentistID','=', $currentuserid)
-        ->orderby('date','asc')
-        ->get(['appointments.*', 'dentists.name as dentname', 'patients.name as patname']);
-        return view('viewappointment', ['appointments' => $appointments, 'gender' => $gender]);
+        $appointments = Appointment::join('dentists', 'dentists.dentistID', '=', 'appointments.dentistID')
+            ->join('patients', 'patients.patientID', '=', 'appointments.patientID')
+            ->where('appointments.patientID','=', $currentuserid)
+            ->orWhere('appointments.dentistID','=', $currentuserid)
+            ->orderby('date','asc')
+            ->get(['appointments.*', 'dentists.name as dentname', 'patients.name as patname']);
+    
+        // Initialize $selectedDate to null if it's not already set
+        $selectedDate = null;
+    
+        return view('viewappointment', compact('appointments', 'gender', 'selectedDate'));
     }
+    
+
+    public function filter(Request $request)
+    {
+        $selectedDate = $request->input('selected_date');
+        $currentUserId = Auth::id();
+        $gender = Patient::where('patientID', $currentUserId)->pluck('gender')->first();
+        if (Auth::user()->role == 1){
+        $appointments = Appointment::join('dentists', 'dentists.dentistID', '=', 'appointments.dentistID')
+            ->join('patients', 'patients.patientID', '=', 'appointments.patientID')
+            ->where('appointments.dentistID', $currentUserId)
+            ->where('date', $selectedDate) // Ensure that the date matches the selected date
+            ->orderBy('date', 'asc')
+            ->get(['appointments.*', 'dentists.name as dentname', 'patients.name as patname']);
+    
+        return view('viewappointment', compact('appointments', 'gender', 'selectedDate'));
+        }
+        elseif(Auth::user()->role == 0){
+            $appointments = Appointment::join('dentists', 'dentists.dentistID', '=', 'appointments.dentistID')
+            ->join('patients', 'patients.patientID', '=', 'appointments.patientID')
+            ->where('appointments.patientID', $currentUserId)
+            ->where('date', $selectedDate) // Ensure that the date matches the selected date
+            ->orderBy('date', 'asc')
+            ->get(['appointments.*', 'dentists.name as dentname', 'patients.name as patname']);
+    
+        return view('viewappointment', compact('appointments', 'gender', 'selectedDate'));
+        }
+    }
+    
 
     public function reschedule($id){
         $appointment = Appointment::find($id);
@@ -105,6 +175,7 @@ class AppointmentController extends Controller
         // else
 
         $appointment-> save();
+        session()->flash('message', 'Appointment Updated.');
         return redirect()-> route('view.all.appointment');
     }
 

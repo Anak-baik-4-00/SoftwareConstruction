@@ -14,7 +14,11 @@
             <div class="team-item">
                 <div class="row g-0 bg-light rounded h-100">
                     <div class="col-12 col-sm-5 h-100">
-                        <img class="img-fluid h-100" src="{{ asset('assets/img/team-1.jpg') }}" style="object-fit: cover;">
+                        @if(Auth::user()->role == 1)
+                        <img class="img-fluid h-100" src="{{ asset('assets/img/dentist.png') }}" style="object-fit: cover;">
+                        @else
+                        <img class="img-fluid h-100" src="{{ asset('assets/img/patient.png') }}" style="object-fit: cover;">
+                        @endif
                     </div>
                     <div class="col-12 col-sm-7 h-100 d-flex flex-column">
                         <div class="mt-auto p-4">
@@ -25,17 +29,17 @@
                             <h3>{{ Auth::user()->name }}</h3>
                             <h6 class="fw-normal fst-italic text-primary mb-4">Dentist Profile</h6>
                             <input type="email" class="form-control bg-light" style="width: 200px;"placeholder="{{ Auth::user()->email }}" value="{{ Auth::user()->email }}" disabled>
-                            <input type="text" class="form-control bg-light" style="width: 200px;"placeholder="{{ Auth::user()->name }}" value="{{ Auth::user()->name }}">
+                            <input type="text" id="name" name="name" class="form-control bg-light" style="width: 200px;"placeholder="{{ Auth::user()->name }}" value="{{ Auth::user()->name }}" disabled>
                             <input type="text" id="age" name="age" class="form-control bg-white" style="width: 200px;"placeholder="{{ $dentists[0]['dentage'] }}" value="{{ $dentists[0]['dentage'] }}" >
-                            <input type="text" id="gender" class="form-control bg-white" style="width: 200px;"placeholder="{{ $dentists[0]['dentgen'] }}" value="{{ $dentists[0]['dentgen'] }}"disabled>
+                            <input type="text" id="gender" class="form-control bg-light" style="width: 200px;"placeholder="{{ $dentists[0]['dentgen'] }}" value="{{ $dentists[0]['dentgen'] }}"disabled>
                             <input type="number" id="phoneNumber" name="phoneNumber" class="form-control bg-white" style="width: 200px;"placeholder="0{{ $dentists[0]['dentphone'] }}" value="{{ $dentists[0]['dentphone'] }}">
                             @else
                             <h3>{{ Auth::user()->name }}</h3>
                             <h6 class="fw-normal fst-italic text-primary mb-4">Patient Profile</h6>
                             <input type="email" class="form-control bg-light" style="width: 200px;"placeholder="{{ Auth::user()->email }}" value="{{ Auth::user()->email }}" disabled>
-                            <input type="text" name="name" class="form-control bg-white" style="width: 200px;"placeholder="{{ Auth::user()->name }}" value="{{ Auth::user()->name }}">
-                            <input type="text" id="age" name="age" class="form-control bg-white" style="width: 200px;"placeholder="{{ $patients[0]['patage'] }}" >
-                            <input type="text" id="gender" class="form-control bg-white" style="width: 200px;"placeholder="{{ $patients[0]['patgen'] }}" value="{{ $patients[0]['patgen'] }}"disabled>
+                            <input type="text" name="name" class="form-control bg-light" style="width: 200px;"placeholder="{{ Auth::user()->name }}" value="{{ Auth::user()->name }}" disabled>
+                            <input type="text" id="age" name="age" class="form-control bg-white" style="width: 200px;"placeholder="{{ $patients[0]['patage'] }}" value="{{ $patients[0]['patage'] }}">
+                            <input type="text" id="gender" class="form-control bg-light" style="width: 200px;"placeholder="{{ $patients[0]['patgen'] }}" value="{{ $patients[0]['patgen'] }}"disabled>
                             <input type="number" id="phoneNumber" name="phoneNumber" class="form-control bg-white" style="width: 200px;"placeholder="0{{ $patients[0]['patphone'] }}" value="{{ $patients[0]['patphone'] }}">
                             @endif
                         </div>

@@ -8,33 +8,46 @@
                 <div class="col-lg-6 mb-5 mb-lg-0">
                     <div class="mb-4">
                         <h5 class="d-inline-block text-white text-uppercase border-bottom border-5">Appointment</h5>
-                        <h1 class="display-4">Make An Appointment For Your Family</h1>
+                        <h1 class="display-4">Make An Appointment Today</h1>
                     </div>
-                    <p class="text-white mb-5">Eirmod sed tempor lorem ut dolores. Aliquyam sit sadipscing kasd ipsum. Dolor ea et dolore et at sea ea at dolor, justo ipsum duo rebum sea invidunt voluptua. Eos vero eos vero ea et dolore eirmod et. Dolores diam duo invidunt lorem. Elitr ut dolores magna sit. Sea dolore sanctus sed et. Takimata takimata sanctus sed.</p>
-                    <a class="btn btn-dark rounded-pill py-3 px-5 me-3" href="">Find Doctor</a>
-                    <a class="btn btn-outline-dark rounded-pill py-3 px-5" href="">Read More</a>
+                    <p class="text-white mb-5">Don't delay any longer – take a proactive step towards better oral health by scheduling an appointment today.
+                        Our experienced dental team is ready to provide you with exceptional care, addressing your concerns and ensuring your comfort throughout the process.
+                        With our state-of-the-art facilities and personalized approach, you can trust us to deliver the highest quality treatments and achieve remarkable results.
+                        Your oral health is our priority, and by making an appointment, you're investing in a brighter, healthier smile.
+                        Don't wait another day – contact us now and experience the positive difference that professional dental care can make.</p>
                 </div>
                 <div class="col-lg-6">
                     <div class="bg-white text-center rounded p-5">
                         <h1 class="mb-4">Book An Appointment</h1>
+                        @if ($errors->has('appointment'))
+                        <div class="alert alert-danger">
+                            {{ $errors->first('appointment') }}
+                        </div>
+                        @endif
                         <form method="POST" action="{{ route('book.appointment.new') }}">
                             @csrf
                             <div class="row g-3">
                                 <div class="col-12 col-sm-6">
                                     <select class="form-select bg-light border-0" style="height: 55px;" name="treatmentID">
-                                        <option selected>Choose Treatment</option>
+                                        <option selected value="">Choose Treatment</option>
                                         @foreach($treatments as $treatment)
                                         <option value="{{$treatment->id}}">{{$treatment->treatmentName}}</option>
                                         @endforeach
                                     </select>
+                                    @error('treatmentID')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <select class="form-select bg-light border-0" style="height: 55px;" name="dentistID">
-                                        <option selected>Select Doctor</option>
+                                        <option selected value="">Select Doctor</option>
                                         @foreach($users as $user)
                                         <option value="{{$user->id}}">{{$user->name}}</option>
                                         @endforeach
                                     </select>
+                                    @error('dentistID')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <input type="hidden" value="{{ Auth::user()->id }}" name="patientID">
@@ -50,10 +63,13 @@
                                             class="form-control bg-light border-0 datetimepicker-input"
                                             placeholder="Date" data-target="#date" data-toggle="datetimepicker" style="height: 55px;" name="date">
                                     </div>
+                                    @error('date')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <select class="form-select bg-light border-0" style="height: 55px;" name="time">
-                                        <option selected>Select Time</option>
+                                        <option selected value="">Select Time</option>
                                         <option value="10:00:00">10:00 AM</option>
                                         <option value="11:00:00">11:00 AM</option>
                                         <option value="12:00:00">12:00 AM</option>
@@ -63,6 +79,9 @@
                                         <option value="18:00:00">06:00 PM</option>
                                         <option value="20:00:00">08:00 PM</option>
                                     </select>
+                                    @error('time')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
 
                                     {{-- <div class="time" id="time" data-target-input="nearest">
                                         <input type="time"

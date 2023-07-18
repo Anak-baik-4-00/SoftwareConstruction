@@ -10,7 +10,13 @@
                     <h4 class="display-10">Appointment For : Drg. {{ Auth::user()->name }}</h4>
                     @endif
                 </div>
-                @if ($documents->where('type', 0)->isNotEmpty())
+
+                @if (session()->has('message'))
+                <div class="alert alert-success">
+                    {{ session('message') }}
+                </div>
+                @endif
+                @if ($appointments->where('status', 1)->isNotEmpty())
                     <h5>Invoice Documents</h5>
                     <div class="table-responsive">
                         <table class="table table-striped">
@@ -18,23 +24,20 @@
                                 <tr>
                                     <th class="border-top-0">#</th>
                                     <th class="border-top-0">Patient Name</th>
-                                    <th class="border-top-0">Document Name</th>
-                                    <th class="border-top-0">Action</th>
+                                    <th class="border-top-0">Treatment Type</th>
+                                    <th class="border-top-0">Document</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($documents->where('type', 0) as $document)
+                                @foreach($appointments->where('status', 1) as $appointment)
                                     <tr>
                                         <td>{{$loop->iteration}}</td>
-                                        <td>{{$document->patname}}</td>
-                                        <td>{{$document->name}}</td>
+                                        <td>{{$appointment->patname}}</td>
+                                        <td>{{$appointment->treatmentname}}</td>
                                         <td>
                                             <button type="#" class="btn-sm btn-warning">
-                                               <a href="{{ route('patient.download.document', $document->id) }}" style="color: black" >Download</a>
-                                            </button></a>
-                                            <button type="#" class="btn-sm btn-warning">
-                                                <a href="{{ route('delete.document', $document->id) }}" style="color: black" >Delete</a>
-                                             </button></a>
+                                                <a href="{{ route('generate.invoice', $appointment->appointmentID) }}" style="color: black" >Generate</a>
+                                            </button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -65,7 +68,7 @@
                                             <button type="#" class="btn-sm btn-warning">
                                                <a href="{{ route('patient.download.document', $document->id) }}" style="color: black" >Download</a>
                                             </button></a>
-                                            <button type="#" class="btn-sm btn-warning">
+                                            <button type="#" class="btn-sm btn-danger">
                                                 <a href="{{ route('delete.document', $document->id) }}" style="color: black" >Delete</a>
                                              </button></a>
                                         </td>
@@ -98,7 +101,7 @@
                                             <button type="#" class="btn-sm btn-warning">
                                                <a href="{{ route('patient.download.document', $document->id) }}" style="color: black" >Download</a>
                                             </button></a>
-                                            <button type="#" class="btn-sm btn-warning">
+                                            <button type="#" class="btn-sm btn-danger">
                                                 <a href="{{ route('delete.document', $document->id) }}" style="color: black" >Delete</a>
                                              </button></a>
                                         </td>

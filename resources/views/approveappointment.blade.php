@@ -8,6 +8,12 @@
                 <div class="mb-4">
                     <h4 class="display-10">Appointment For : Drg. {{ Auth::user()->name }}</h4>
                 </div>
+                @if ($appointments->isEmpty())
+                <p>No Appointment has been made.</p>
+                @else
+                @if(session('message'))
+                <div class="alert alert-success">{{ session('message') }}</div>
+                @endif
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
@@ -79,6 +85,7 @@
                     </table>
                 </div>
             </div>
+            @endif
         </div>
     </div>
     <!-- Appointment End -->

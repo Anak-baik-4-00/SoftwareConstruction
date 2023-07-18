@@ -16,7 +16,7 @@
     <!-- Style -->
     <link rel="stylesheet" href="{{ asset('assets/login/css/style.css') }}">
 
-    <title>Login #7</title>
+    <title>E-Dental</title>
   </head>
   <body>
   
@@ -35,11 +35,16 @@
               <h3>Sign In</h3>
               <p class="mb-4">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p>
             </div>
+            @if (session()->has('message'))
+                <div class="alert alert-success">
+                    {{ session('message') }}
+                </div>
+                @endif
             @if (session('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
-                        </div>
-                        @endif
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+            @endif
             <form method="POST" action="{{ route('login') }}">
               @csrf
               <div class="form-group first">
@@ -68,26 +73,13 @@
                   <input type="checkbox" checked="checked"/>
                   <div class="control__indicator"></div>
                 </label>
-                <span class="ml-auto"><a href="#" class="forgot-pass">Forgot Password</a></span> 
+                <span class="ml-auto"><a href="changepassword" class="forgot-pass">Forgot Password</a></span> 
               </div>
               
               <button type="submit" class="btn btn-block btn-primary">
                 {{ __('Login') }}
               </button>
               <span class="d-block text-left my-4 text-muted">&mdash; Don't have an account ? &mdash;<a href="register"> Register here</a> </span>
-              <span class="d-block text-left my-4 text-muted">&mdash; or login with &mdash;</span>
-              
-              <div class="social-login">
-                <a href="#" class="facebook">
-                  <span class="icon-facebook mr-3"></span> 
-                </a>
-                <a href="#" class="twitter">
-                  <span class="icon-twitter mr-3"></span> 
-                </a>
-                <a href="#" class="google">
-                  <span class="icon-google mr-3"></span> 
-                </a>
-              </div>
             </form>
             </div>
           </div>
