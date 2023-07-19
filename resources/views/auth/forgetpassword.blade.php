@@ -49,20 +49,9 @@
                                     </ul>
                                 </div>
                             @endif
-                            <form method="POST" action="{{ route('password.change') }}">
+                            <form method="POST" action="{{ route('forget.password.post') }}">
                                 @csrf
-                                <p class="mb-0">Select User Role</p>
-                                <div class="form-check">
-                                        <input type="radio" id="patient" name="role" value="0" class="form-check-input @error('role') is-invalid @enderror" style="margin: 5px; margin-left: -20px">
-                                        <label for="patient">Patient</label>
-                                        <input type="radio" id="dentist" name="role" value="1" class="form-check-input @error('role') is-invalid @enderror" style="margin: 5px; margin-left: 20px">
-                                        <label for="dentist"style="margin-left: 40px">Dentist</label>
-                                        @error('role')
-                                              <span class="invalid-feedback" role="alert">
-                                                  <strong>{{ $message }}</strong>
-                                              </span>
-                                          @enderror
-                                </div>
+                                
 
                                 <div class="form-group first">
                                     <label for="email">Email</label>
@@ -74,36 +63,11 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group last mb-4">
-                                    <label for="phoneNumber">Phone Number</label>
-                                    <input id="phoneNumber" type="number" class="form-control @error('phoneNumber') is-invalid @enderror" name="phoneNumber" required>
-                                    @error('phoneNumber')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group first">
-                                    <label for="password">Password</label>
-                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-                                    @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group last mb-4">
-                                    <label for="password_confirmation">Confirm Password</label>
-                                    <input id="password_confirmation" type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" required autocomplete="new-password">
-                                </div>
-
                                 <button type="submit" class="btn btn-block btn-primary">
-                                    Change Password
+                                    Send Email
                                 </button>
 
-                                <span class="d-block text-left my-4 text-muted">&mdash; Already have an account? &mdash;<a href="login"> Login here</a> </span>
+                                <span class="d-block text-left my-4 text-muted">&mdash; Already have an account? &mdash;<a href="{{route('/login')}}"> Login here</a> </span>
                             </form>
                         </div>
                     </div>
