@@ -166,6 +166,28 @@ Route::group(['middleware' => ['auth', '1']], function() {
 });
 
 
+//Treatment
+Route::group(['middleware' => ['auth', '1']], function() {
+    Route::get('/allTreatments', [App\Http\Controllers\TreatmentController::class, 'viewAllTreatments'])->name('receptionist.treatment.viewAll');
+    Route::get('/addTreatment', function () {
+        return view('admin.addTreatment');
+    })->name('receptionist.treatment.add');
+    Route::get('/editTreatment/{id}', [App\Http\Controllers\TreatmentController::class, 'viewEditTreatment'])->name('receptionist.treatment.edit');
+
+    Route::post('/addTreatment', [App\Http\Controllers\TreatmentController::class, 'addNewTreatment'])->name('receptionist.treatment.new');
+
+    Route::put('/editTreatment/{id}', [App\Http\Controllers\TreatmentController::class, 'editTreatment'])->name('receptionist.treatment.save');
+
+    Route::delete('/deleteTreatment/{id}', [App\Http\Controllers\TreatmentController::class, 'deleteTreatment'])->name('receptionist.treatment.delete');
+
+
+});
+
+
+
+
+
+
 //--------------Route Patient-------------------
 Route::group(['middleware' => ['auth', 'patient']], function() {
     // your routes
