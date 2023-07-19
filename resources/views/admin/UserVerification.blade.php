@@ -4,6 +4,9 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="white-box">
+            @if(session('message'))
+            <div class="alert alert-success">{{ session('message') }}</div>
+            @endif
             <h3 class="box-title">Manage Users</h3>
             <div class="table-responsive">
                 <table class="table text-nowrap">

@@ -10,6 +10,9 @@
                     <h4 class="display-10">Appointment For : Drg. {{ Auth::user()->name }}</h4>
                     @endif
                 </div>
+                @if ($documents->isEmpty())
+                <p>No record of Digital Document.</p>
+                @else
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
@@ -49,6 +52,7 @@
                         </tbody>
                     </table>
                 </div>
+                @endif
             </div>
         </div>
     </div>

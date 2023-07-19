@@ -38,7 +38,7 @@
             </div>
             <form method="POST" action="{{ route('register') }}">
               @csrf
-                <p class="mb-0">Select User Role</p>
+                {{-- <p class="mb-0">Select User Role</p>
                 <div class="form-check">
                 <input type="radio" id="patient" name="role" value="0" class="form-check-input @error('role') is-invalid @enderror" style="margin: 5px; margin-left: -20px">
                 <label for="patient">Patient</label>
@@ -49,13 +49,14 @@
                           <strong>{{ $message }}</strong>
                       </span>
                   @enderror
-                </div>
-                <input id="role" type="hidden" name="userstatus" value="0">
+                </div> --}}
+                <input id="role" type="hidden" name="role" value="0">
+                <input id="userstatus" type="hidden" name="userstatus" value="0">
                 <input id="admin" type="hidden" name="is_admin" value="0">
               
               <div class="form-group first">
                 <label for="fullname">Full Name</label>
-                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" autocomplete="name" autofocus>
                 @error('name')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -95,7 +96,7 @@
 
               <div class="form-group first">
                 <label for="email">Email</label>
-                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email">
+                <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email">
                   @error('email')
                       <span class="invalid-feedback" role="alert">
                           <strong>{{ $message }}</strong>
@@ -104,7 +105,7 @@
               </div>
               <div class="form-group">
                 <label for="password">Password</label>
-                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" autocomplete="new-password">
                   @error('password')
                       <span class="invalid-feedback" role="alert">
                           <strong>{{ $message }}</strong>
@@ -113,7 +114,7 @@
               </div>
               <div class="form-group last mb-4">
                 <label for="password">Confirm Password</label>
-                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
               </div>
               
               <div class="d-flex mb-5 align-items-center">
@@ -128,19 +129,6 @@
                 {{ __('Register') }}
               </button>
               <span class="d-block text-left my-4 text-muted">&mdash; Already have an account ? &mdash;<a href="login"> Login here</a> </span>
-              <span class="d-block text-left my-4 text-muted">&mdash; or login with &mdash;</span>
-              
-              <div class="social-login">
-                <a href="#" class="facebook">
-                  <span class="icon-facebook mr-3"></span> 
-                </a>
-                <a href="#" class="twitter">
-                  <span class="icon-twitter mr-3"></span> 
-                </a>
-                <a href="#" class="google">
-                  <span class="icon-google mr-3"></span> 
-                </a>
-              </div>
             </form>
             </div>
           </div>

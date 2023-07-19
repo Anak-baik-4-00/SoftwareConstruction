@@ -58,7 +58,7 @@
                                 </td>
                                 @endif
                                 <td>
-                                    <button type="submit" class="btn btn-success">Save
+                                    <button type="submit" class="btn btn-success">Confirm
                                     </button>
                                     </form>
                                 </td>

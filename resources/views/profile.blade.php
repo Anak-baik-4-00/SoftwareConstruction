@@ -9,12 +9,21 @@
             @else
             <h1 class="display-4">Our Beloved Patient</h1>
             @endif
+            @if (session()->has('message'))
+            <div class="alert alert-success">
+                {{ session('message') }}
+            </div>
+            @endif
         </div>
         <div class="position-relative">
             <div class="team-item">
                 <div class="row g-0 bg-light rounded overflow-hidden">
                     <div class="col-12 col-sm-5 h-100">
-                        <img class="img-fluid h-100" src="{{ asset('assets/img/team-1.jpg') }}" style="object-fit: cover;">
+                        @if(Auth::user()->role == 1)
+                        <img class="img-fluid h-100" src="{{ asset('assets/img/dentist.png') }}" style="object-fit: cover;">
+                        @else
+                        <img class="img-fluid h-100" src="{{ asset('assets/img/patient.png') }}" style="object-fit: cover;">
+                        @endif
                     </div>
                     <div class="col-12 col-sm-7 h-100 d-flex flex-column">
                         <div class="mt-auto p-4">

@@ -29,6 +29,11 @@
                         <form method="POST" action="{{ route('upload.document.new') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="row g-3">
+                                @if (session()->has('message'))
+                                <div class="alert alert-success">
+                                    {{ session('message') }}
+                                </div>
+                                @endif
                                 {{-- <div class="col-12 col-sm-6">
                                     <select class="form-select bg-light border-0" style="height: 55px;" name="treatmentID">
                                         <option selected>Choose Treatment</option>
@@ -41,11 +46,14 @@
                                 @if (Auth::user()->role == 0)
                                 <div class="col-12 col-sm-6">
                                     <select class="form-select bg-light border-0" style="height: 55px;" name="dentistID">
-                                        <option selected>Select Dentist</option>
+                                        <option selected value="">Select Dentist</option>
                                         @foreach($users as $user)
                                         <option value="{{$user->id}}">{{$user->name}}</option>
                                         @endforeach
                                     </select>
+                                    @error('dentistID')
+                                    <span style="color: red">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <input type="hidden" value="{{ Auth::user()->id }}" name="patientID">
@@ -60,6 +68,9 @@
                                         <option value="{{$user->id}}">{{$user->name}}</option>
                                         @endforeach
                                     </select>
+                                    @error('patientID')
+                                    <span style="color: red">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <input type="hidden" value="{{ Auth::user()->id }}" name="dentistID">
@@ -69,17 +80,26 @@
                                 @endif
                                 <div class="col-12 col-sm-6">
                                     <input type="text" class="form-control bg-light border-0" placeholder="Enter Document Name" style="height: 55px;" value="" name="name">
+                                    @error('name')
+                                    <span style="color: red">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <select class="form-select bg-light border-0" style="height: 55px;" name="type">
-                                        <option selected>Type of Document</option>
+                                        <option selected value="">Type of Document</option>
                                         <option value=0>Invoice</option>
                                         <option value=1>Receipt</option>
                                         <option value=2>Digital History</option>
                                     </select>
+                                    @error('type')
+                                    <span style="color: red">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <input type="file" class="form-control bg-light border-0" placeholder="Enter Document Name" value="" name="file">
+                                	@error('file')
+                                	<span style="color: red">{{ $message }}</span>
+                                	@enderror
                                 </div>
                                 <span>*Please upload a PDF document (max 2MB).</span>
                                 <div class="col-12">
