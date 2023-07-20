@@ -23,6 +23,7 @@ class Dentist extends Authenticatable
         'role',
         'userstatus',
         'is_admin',
+        'pimg',
     ];
     protected $primaryKey = 'dentistID';
 }
