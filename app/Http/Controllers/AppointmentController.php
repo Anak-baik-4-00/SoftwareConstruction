@@ -13,8 +13,34 @@ use Illuminate\Validation\Rule;
 
 class AppointmentController extends Controller
 {
-    public function makeAppointment(){
+    public function makeAppointment(Request $request){
+        $request->validate([
+            'dentistID' => 'required',
+            'treatmentID' => 'required',
+            'date' => 'required',
+            'time' => 'required',
+            'dentistID' => [
+                'required',
+                Rule::unique('appointments')->where(function ($query) use ($request) {
+                    return $query->where('date', $request->date)
+                        ->where('time', $request->time)
+                        ->where('dentistID', $request->dentistID)
+                        ->where(function ($subquery) {
+                            $subquery->where('status', 1)
+                                ->orWhere('status', 0);
+                        });
+                })->ignore($request->appointmentID),
+            ],
+        ], [
+            'dentistID.required' => 'Please select the dentist.',
+            'treatmentID.required' => 'Please select the treatment.',
+            'date.required' => 'Please select the date.',
+            'time.required' => 'Please select the time.',
+            'dentistID.unique' => 'An appointment already exists on the selected date and time with the same dentist.',
+        ]);
+
         $appointment = new Appointment();
+        // $appointment->appointmentID = $appointment->appointmentID+1;
         $appointment->dentistID = request('dentistID');
         $appointment->patientID = request('patientID');
         $appointment->treatmentID = request('treatmentID');
@@ -23,8 +49,8 @@ class AppointmentController extends Controller
         $appointment->status = request('status');
 
         $appointment->save();
-
-        return redirect()->route('book.aapointment.new');
+        session()->flash('message', 'Appointment has been made.');
+        return redirect()->route('view.all.appointment');
     }
     
     public function reqalldata(){
