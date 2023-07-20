@@ -24,35 +24,41 @@ class DocumentController extends Controller
         return view('DigitalDocument', ['documents' => $documents ]);
     } 
 
-    public function patientDocument(){
-        $currentuserid = Auth::user()->id;
-        $gender = Patient::select('gender')->where('patientID', '=', $currentuserid)->get();
-        $documents = DigitalDocument::join('patients', 'patients.patientID', '=', 'digital_documents.patientID')
-        ->join('dentists', 'dentists.dentistID', '=', 'digital_documents.dentistID')
-        ->where('digital_documents.patientID','=', $currentuserid)
-        ->get(['digital_documents.*', 'dentists.name as dentname']);
-
-        // $appointments = Appointment::join('dentists', 'dentists.dentistID', '=', 'appointments.dentistID')
-        // ->join('patients', 'patientsz.patientID', '=', 'appointments.patientID')
-        // ->where('appointments.patientID','=', $currentuserid)
-        // ->orderby('date','asc')
-        // ->get(['appointments.*', 'dentists.name as dentname', 'patients.name as patname']);
-
-        $appointments = Appointment::join('dentists', 'dentists.dentistID', '=', 'appointments.dentistID')
-        ->join('patients', 'patients.patientID', '=', 'appointments.patientID')
-        ->join('treatments', 'treatments.id', '=', 'appointments.treatmentID')
-        ->where('appointments.patientID','=', $currentuserid)
-        ->orderby('date','asc')
-        ->get(['appointments.*', 'dentists.name as dentname', 'patients.name as patname'
-        , 'treatments.treatmentName as treatmentname', 'treatments.price as treatmentprice']);
-
+    public function patientDocument()
+    {
+        $currentUserId = Auth::user()->id;
+        $gender = $this->getPatientGender($currentUserId);
+        $documents = $this->getPatientDocuments($currentUserId);
+        $appointments = $this->getPatientAppointments($currentUserId);
+    
         return view('DigitalDocument', [
             'documents' => $documents,
             'gender' => $gender,
             'appointments' => $appointments,
         ]);
     }
-
+    
+    private function getPatientGender($patientId)
+    {
+        return Patient::where('patientID', $patientId)->value('gender');
+    }
+    
+    private function getPatientDocuments($patientId)
+    {
+        return DigitalDocument::join('dentists', 'dentists.dentistID', '=', 'digital_documents.dentistID')
+            ->where('digital_documents.patientID', $patientId)
+            ->get(['digital_documents.*', 'dentists.name as dentname']);
+    }
+    
+    private function getPatientAppointments($patientId)
+    {
+        return Appointment::join('dentists', 'dentists.dentistID', '=', 'appointments.dentistID')
+            ->join('patients', 'patients.patientID', '=', 'appointments.patientID')
+            ->join('treatments', 'treatments.id', '=', 'appointments.treatmentID')
+            ->where('appointments.patientID', $patientId)
+            ->orderBy('date', 'asc')
+            ->get(['appointments.*', 'dentists.name as dentname', 'patients.name as patname', 'treatments.treatmentName as treatmentname', 'treatments.price as treatmentprice']);
+    }
     // public function generateinvoice($id)
     // {
     //     $appointment = Appointment::join('treatments', 'treatments.id', '=', 'appointments.treatmentID')

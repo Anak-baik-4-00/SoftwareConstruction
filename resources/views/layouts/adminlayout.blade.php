@@ -144,6 +144,13 @@
                                 <span class="hide-menu">Register Dentist</span>
                             </a>
                         </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('receptionist.treatment.viewAll') }}"
+                                aria-expanded="false">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                                <span class="hide-menu">Manage Treatment</span>
+                            </a>
+                        </li>
                     </ul>
 
                 </nav>

@@ -73,7 +73,7 @@
                   <input type="checkbox" checked="checked"/>
                   <div class="control__indicator"></div>
                 </label>
-                <span class="ml-auto"><a href="changepassword" class="forgot-pass">Forgot Password</a></span> 
+                <span class="ml-auto"><a href="{{route('password.request')}}" class="forgot-pass">Forgot Password</a></span> 
               </div>
               
               <button type="submit" class="btn btn-block btn-primary">

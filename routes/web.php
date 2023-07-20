@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\TreatmentController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 
 
 /*
@@ -66,8 +67,6 @@ Route::get('/UploadDigitalDocument', function () {
 
 Route::post('/UploadDigitalDocument', [DocumentController::class, 'uploaddocument'])->name('upload.document.new')->middleware('auth');
 Route::get('/UploadDigitalDocument', [DocumentController::class, 'redata'])->name('req.document.data')->middleware('auth');
-
-
 
 
 Route::get('/dentistdocument', [DocumentController::class, 'dentistDocument'])->name('list.patient.document')->middleware('auth');
@@ -166,6 +165,28 @@ Route::group(['middleware' => ['auth', '1']], function() {
 });
 
 
+//Treatment
+Route::group(['middleware' => ['auth', '1']], function() {
+    Route::get('/allTreatments', [App\Http\Controllers\TreatmentController::class, 'viewAllTreatments'])->name('receptionist.treatment.viewAll');
+    Route::get('/addTreatment', function () {
+        return view('admin.addTreatment');
+    })->name('receptionist.treatment.add');
+    Route::get('/editTreatment/{id}', [App\Http\Controllers\TreatmentController::class, 'viewEditTreatment'])->name('receptionist.treatment.edit');
+
+    Route::post('/addTreatment', [App\Http\Controllers\TreatmentController::class, 'addNewTreatment'])->name('receptionist.treatment.new');
+
+    Route::put('/editTreatment/{id}', [App\Http\Controllers\TreatmentController::class, 'editTreatment'])->name('receptionist.treatment.save');
+
+    Route::delete('/deleteTreatment/{id}', [App\Http\Controllers\TreatmentController::class, 'deleteTreatment'])->name('receptionist.treatment.delete');
+
+
+});
+
+
+
+
+
+
 //--------------Route Patient-------------------
 Route::group(['middleware' => ['auth', 'patient']], function() {
     // your routes
@@ -184,3 +205,16 @@ Route::group(['middleware' => ['auth', 'dentist']], function() {
     Route::put('/approveappointment', [AppointmentController::class, 'dentistupdatestatus'])->name('update.appointment.status');
     Route::get('/dentistdocument', [DocumentController::class, 'dentistDocument'])->name('view.all.dentist.document')->middleware('auth');
 });
+
+    /*
+|--------------------------------------------------------------------------
+| Authentications Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/password/confirm', 'App\Http\Controllers\Auth\ConfirmPasswordController@showConfirmForm')->name('password.confirm');
+Route::post('/password/confirm', 'App\Http\Controllers\Auth\ConfirmPasswordController@confirm');
+Route::post('/password/email', 'App\Http\Controllers\Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+Route::get('/password/reset', 'App\Http\Controllers\Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+Route::post('/password/reset', 'App\Http\Controllers\Auth\ResetPasswordController@reset')->name('password.update');
+Route::get('/password/reset/{token}', 'App\Http\Controllers\Auth\ResetPasswordController@showResetForm')->name('password.reset');
+
