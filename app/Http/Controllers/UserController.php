@@ -153,11 +153,11 @@ class UserController extends Controller
         $user = User::findOrFail($currentuserid);
         $patients = User::join('patients', 'patients.patientID', '=', 'users.id')
         ->where('users.id','=', $currentuserid)
-        ->get(['users.*', 'patients.age as patage', 'patients.phoneNumber as patphone', 'patients.gender as patgen', 'patients.patientID as patID', 'patients.pimg as patimg']);
+        ->get(['users.*', 'patients.age as patage', 'patients.phoneNumber as patphone', 'patients.gender as patgen', 'patients.patientID as patID' ]);
         error_log($patients);
         $dentists = User::join('dentists', 'dentists.dentistID', '=', 'users.id')
         ->where('users.id','=', $currentuserid)
-        ->get(['users.*', 'dentists.age as dentage', 'dentists.phoneNumber as dentphone', 'dentists.gender as dentgen', 'dentists.pimg as dentimg']);
+        ->get(['users.*', 'dentists.age as dentage', 'dentists.phoneNumber as dentphone', 'dentists.gender as dentgen']);
 
         // error_log($users);
         return view ('profile',['patients'=> $patients, 'dentists'=>$dentists, 'user' => $user]);
@@ -168,12 +168,12 @@ class UserController extends Controller
         // $currentuserid = Auth::user()->id;
         $patients = User::join('patients', 'patients.patientID', '=', 'users.id')
         ->where('users.id','=', $id)
-        ->get(['users.*', 'patients.age as patage', 'patients.phoneNumber as patphone', 'patients.gender as patgen' , 'patients.pimg as patimg']);
+        ->get(['users.*', 'patients.age as patage', 'patients.phoneNumber as patphone', 'patients.gender as patgen' ]);
         // error_log($patients);
 
         $dentists = User::join('dentists', 'dentists.dentistID', '=', 'users.id')
         ->where('users.id','=', $id)
-        ->get(['users.*', 'dentists.age as dentage', 'dentists.phoneNumber as dentphone', 'dentists.gender as dentgen', 'dentists.pimg as dentimg']);
+        ->get(['users.*', 'dentists.age as dentage', 'dentists.phoneNumber as dentphone', 'dentists.gender as dentgen']);
 
         // error_log($users);
         return view ('manageprofile',['patients'=> $patients, 'dentists'=>$dentists, 'user' => $user]);
@@ -204,12 +204,9 @@ class UserController extends Controller
             // $currentuserid = Auth::user()->id;
             $patient = Patient::where("patientID", $id)->firstOrFail();
             $user = User::where("id", $id)->firstOrFail();
-            $image = $request->file('pimg');
-            $imageContents = file_get_contents($image->getRealPath());
             // $patient = Patient::findOrFail($id);
             $patient->age = $request->input('age');
             $patient->phoneNumber = $request->input('phoneNumber');
-            $patient->pimg = $imageContents;
             $patient->save();
             $user->save();
             session()->flash('message', 'Update Successful.');
@@ -217,12 +214,9 @@ class UserController extends Controller
         else {
             $dentist = Dentist::where("dentistID", $id)->firstOrFail();
             $user = User::where("id", $id)->firstOrFail();
-            $image = $request->file('pimg');
-            $imageContents = file_get_contents($image->getRealPath());
             // $patient = Patient::findOrFail($id);
             $dentist->age = $request->input('age');
             $dentist->phoneNumber = $request->input('phoneNumber');
-            $dentist->pimg = $imageContents;
             $dentist->save();
             $user->save();
             session()->flash('message', 'Update Successful.');
