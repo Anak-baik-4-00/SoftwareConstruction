@@ -15,16 +15,24 @@
                 <div class="row g-0 bg-light rounded h-100">
                     <div class="col-12 col-sm-5 h-100">
                         @if(Auth::user()->role == 1)
-                        <img class="img-fluid h-100" src="{{ asset('assets/img/dentist.png') }}" style="object-fit: cover;">
+                        <img class="img-fluid w-100" src="data:image/png;charset=utf8;base64,<?php echo base64_encode($dentists[0]['dentimg']); ?>" style="object-fit: cover;">
                         @else
-                        <img class="img-fluid h-100" src="{{ asset('assets/img/patient.png') }}" style="object-fit: cover;">
+                        <img class="img-fluid w-100" src="data:image/png;charset=utf8;base64,<?php echo base64_encode($patients[0]['patimg']); ?>" style="object-fit: cover;">
                         @endif
+                        <form action="{{route('save.user.details', $user->id)}}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+                            @if(Auth::user()->role == 1)
+                            <br><input type="file" id="pimg" name="pimg">
+                            @else
+                            <br><input type="file" id="pimg" name="pimg">
+                            @endif
                     </div>
                     <div class="col-12 col-sm-7 h-100 d-flex flex-column">
                         <div class="mt-auto p-4">
-                            <form action="{{route('save.user.details', $user->id)}}" method="POST">
+                            <!-- <form action="{{route('save.user.details', $user->id)}}" method="POST">
                                 @csrf
-                                @method('PUT')
+                                @method('PUT') -->
                             @if(Auth::user()->role == 1)
                             <h3>{{ Auth::user()->name }}</h3>
                             <h6 class="fw-normal fst-italic text-primary mb-4">Dentist Profile</h6>
