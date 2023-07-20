@@ -23,7 +23,6 @@ class Patient extends Authenticatable
         'role',
         'userstatus',
         'is_admin',
-        'pimg',
     ];
     protected $primaryKey = 'patientID';
 }
