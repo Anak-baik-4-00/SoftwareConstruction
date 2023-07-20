@@ -170,40 +170,17 @@ Route::group(['middleware' => ['auth', '1']], function() {
 Route::group(['middleware' => ['auth', 'patient']], function() {
     // your routes
     Route::get('/makeappointment', [AppointmentController::class, 'reqalldata'])->name('list.all.data')->middleware('auth');
-});
-
-Route::group(['middleware' => ['auth', 'patient']], function() {
-    // your routes
     Route::post('/makeappointment', [AppointmentController::class, 'makeAppointment'])->name('book.appointment.new')->middleware('auth');
-});
-
-// Route::group(['middleware' => ['auth', 'patient']], function() {
-//     // your routes
-//     Route::get('/cancelappointment', [AppointmentController::class, 'patientappointment'])->name('list.all.appointment.cancel')->middleware('auth');
-// });
-
-Route::group(['middleware' => ['auth', 'patient']], function() {
-    // your routes
     Route::put('/cancelappointment', [AppointmentController::class, 'patientupdatestatus'])->name('cancel.appointment.status');
-});
-
-Route::group(['middleware' => ['auth', 'patient']], function() {
-    // your routes
     Route::get('/DigitalDocument', [DocumentController::class, 'patientDocument'])->name('view.all.patient.document')->middleware('auth');
 });
+
 
 
 //--------------Route Dentist-------------------
 Route::group(['middleware' => ['auth', 'dentist']], function() {
     // your routes
     Route::get('/approveappointment', [AppointmentController::class, 'dentistappointment'])->name('list.all.appointment')->middleware('auth');
-});
-
-Route::group(['middleware' => ['auth', 'dentist']], function() {
-    // your routes
     Route::put('/approveappointment', [AppointmentController::class, 'dentistupdatestatus'])->name('update.appointment.status');
-});
-Route::group(['middleware' => ['auth', 'dentist']], function() {
-    // your routes
     Route::get('/dentistdocument', [DocumentController::class, 'dentistDocument'])->name('view.all.dentist.document')->middleware('auth');
 });
